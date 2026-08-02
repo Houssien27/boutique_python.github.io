@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="{{ text_dir }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Le Commerce Général{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+  <a href="{{ url_for('index') }}" class="logo">Le <span>Commerce Général</span></a>
+  <nav>
+    <a href="{{ url_for('index') }}">{{ t('nav_products') }}</a>
+    <a href="{{ url_for('view_cart') }}" id="cart-link">
+      🧺 {{ t('nav_cart') }} {% if cart_count is defined and cart_count %}({{ cart_count }}){% endif %}
+    </a>
+    <div class="lang-switch">
+      <a href="{{ url_for('set_language', lang_code='fr') }}" class="{{ 'active' if lang == 'fr' else '' }}">FR</a>
+      <a href="{{ url_for('set_language', lang_code='ar') }}" class="{{ 'active' if lang == 'ar' else '' }}">عربي</a>
+    </div>
+  </nav>
+</header>
+
+<div class="motif" aria-hidden="true"></div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div class="display">Le Commerce Général</div>
+  <p>{{ t('footer_text') }}</p>
+</footer>
+
+</body>
+</html>

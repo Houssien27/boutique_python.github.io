@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Le Commerce Général — Accueil{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <div class="eyebrow">{{ t('hero_eyebrow') }}</div>
+    <h1>{{ t('hero_title')|safe }}</h1>
+    <p>{{ t('hero_text') }}</p>
+    <a href="#produits" class="hero-cta">{{ t('hero_cta') }}</a>
+  </div>
+</section>
+
+<div class="motif" aria-hidden="true"></div>
+
+<section id="produits">
+  <div class="section-title">
+    <div>
+      <h2>{{ t('products_heading') }}</h2>
+      <p>{{ t('products_sub', n=products|length) }}</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    {% for p in products %}
+    <div class="card">
+      <div class="card-art">
+        {% if p.image %}
+          <img src="{{ url_for('static', filename=p.image) }}" alt="{{ p.name }}">
+        {% else %}
+          {{ p.emoji }}
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <span class="tag">{{ tag(p.tag) }}</span>
+        <h3>{{ p.name }}</h3>
+        <p class="desc">{{ p.desc }}</p>
+        <div class="card-footer">
+          <span class="price">{{ p.price }} UM</span>
+          <form action="{{ url_for('add_to_cart', product_id=p.id) }}" method="post">
+            <button class="add-btn" type="submit">{{ t('add_to_cart') }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
